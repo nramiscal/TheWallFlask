@@ -22,7 +22,7 @@ def login():
     # print request.form
     errors = []
 
-    if len(request.form['email']) < 1:
+    if not request.form['email']:
         errors.append("Email cannot be blank")
     elif not EMAIL_REGEX.match(request.form['email']):
         errors.append("Invalid Email Address")
@@ -32,12 +32,12 @@ def login():
         if len(user) < 1:
             errors.append("Unknown email.")
 
-    if len(request.form['password']) < 1:
+    if not request.form['password']:
         errors.append("Password cannot be blank")
     elif len(request.form['password']) < 8:
         errors.append('Password must be 8 characters or more')
 
-    if len(errors) > 0:
+    if errors:
         for error in errors:
             flash(error)
         return redirect('/')
@@ -69,7 +69,7 @@ def register():
     elif not request.form['last_name'].isalpha():
         errors.append('Last name cannot include numbers.')
 
-    if len(request.form['email']) < 1:
+    if not request.form['email']:
         errors.append("Email cannot be blank")
     elif not EMAIL_REGEX.match(request.form['email']):
         errors.append("Invalid Email Address")
@@ -79,16 +79,16 @@ def register():
         if len(user) > 0:
             errors.append('Email already in use.')
 
-    if len(request.form['password']) < 1:
+    if not request.form['password']:
         errors.append("Password cannot be blank")
     elif len(request.form['password']) < 8:
         errors.append("Password must be at least 8 characters")
-    if len(request.form['pass2']) < 1:
+    if request.form['pass2']:
         errors.append("Password confirmation cannot be blank")
     elif request.form['password'] != request.form['pass2']:
         errors.append("Passwords do not match")
 
-    if len(errors) > 0:
+    if errors:
         for error in errors:
             flash(error)
         return redirect('/')
