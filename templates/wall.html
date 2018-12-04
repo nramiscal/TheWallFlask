@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>The Wall</title>
+    <style media="screen">
+        .addcomment {
+            margin-left: 100px;
+        }
+        .comment {
+            margin-left: 50px;
+        }
+        .normal {
+            font-weight: normal;
+            font-size: 75%;
+        }
+        .float_right {
+            float: right;
+        }
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Welcome to The Wall</h1>
+            <h2>Greetings, {{session.user[1]}}!</h2>
+            <a class = "float_right" href="/logout"><button type="button" class="btn btn-danger">Logout</button></a>
+
+        </div>
+
+    <h1>Post A New Message!</h1>
+    <form class="" action="/message" method="post">
+      <input type="text" name="message" placeholder="Message">
+      <!-- <input type="submit" value="Post message" > -->
+      <button type="submit" class="btn btn-primary">Post Message</button>
+    </form>
+    <br>
+    <hr>
+    <!-- <p>{{message}}</p> -->
+    <!-- <p>{{ message_list }}</p> -->
+    <!-- <p>{{comment_list}}</p> -->
+    <!-- {% for comment in comment_list %}
+            <p>{{ comment }}</p>
+        {% endfor %} -->
+
+
+    {% for message in message_list %}
+
+      <h3 class = "message">Message {{ message['message_id'] }}<span class = "normal"> by {{ message['full_name'] }} - {{ message['created_at'] }}</span></h3>
+      <p class = "message">{{ message['message'] }}</p>
+      <!-- <p>Message_id: #{{ message['message_id'] }}</p> -->
+
+      {% for comment in comment_list %}
+        {% if comment['message_id'] == message['message_id'] %}
+          <h4 class = "comment">Comment <span class = "normal">by {{ comment['first_name']}} {{comment['last_name']}} on {{comment['created_at']}}</span></h4>
+          <p class = "comment">{{ comment['comment'] }}</p>
+        {% endif %}
+      {% endfor %}
+
+
+
+      <h4 class = "addcomment">Post a comment</h4>
+
+      <form class="addcomment" action="/comment" method="post">
+        <input type="hidden" name="message_id" value="{{ message['message_id']}} ">
+        <input type="text" name="comment" placeholder="Comment">
+        <!-- <input type="submit" value="Post comment" > -->
+        <button type="submit" class="btn btn-primary">Post Comment</button>
+      </form>
+      <br>
+      <hr>
+
+    {% endfor %}
+
+
+
+
+    </div>
+  </body>
+</html>
